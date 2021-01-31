@@ -1,0 +1,47 @@
+version: '3.4'
+services:
+  front:
+    build:
+        context: frontend
+        dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+        - ./frontend/src/:/app/src/
+    networks:
+        - internal
+    depends_on:
+      - back
+    command: npm run serve
+
+  back:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+        - ./backend/src:/app/src/
+    networks:
+      - internal
+    depends_on:
+      - mongodb
+    command: sh -c './wait-for mongodb:27017 -- npm run dev'
+
+  mongodb:
+    hostname: mongodb
+    image: mongo:4.4.0
+    logging:
+      driver: none
+    volumes:
+      - ./data/db:/data/db
+    networks:
+        - internal
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    command: mongod --replSet "rs0"
+
+networks:
+  internal:
