@@ -2,7 +2,7 @@
 <footer class="footer">
   <div class="content has-text-centered">
     <p>
-      contact@ilma.io
+      contact@ilmo.io
     </p>
   </div>
 </footer>
