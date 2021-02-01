@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "../views/Home.vue";
-import Query from "../views/Query.vue";
+import Default from "../views/Default.vue";
 import About from "../views/About.vue";
 
 const routes = [
@@ -16,8 +16,8 @@ const routes = [
   },
   {
     path: "/:slug",
-    name: "Query",
-    component: Query,
+    name: "Default",
+    component: Default,
   },
 ];
 

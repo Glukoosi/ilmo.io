@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div class="container content mt-5">
+    <div class="container content">
       <h1>About</h1>
     </div>
   </section>

@@ -1,7 +1,11 @@
 <template>
-  <Navbar />
-  <router-view />
-  <Footer />
+  <div id="body" class="mt-5">
+    <div id="wrapper">
+      <Navbar />
+      <router-view />
+    </div>
+    <Footer />
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,4 +24,13 @@
 </script>
 
 <style>
+  #body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  #wrapper {
+    flex: 1;
+  }
 </style>

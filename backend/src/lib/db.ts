@@ -1,4 +1,3 @@
-import { noSniff } from 'helmet';
 import mongodb from 'mongodb';
 
 import * as validator from './validator';
