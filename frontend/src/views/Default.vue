@@ -1,6 +1,6 @@
 <template>
   <transition name="mode-fade" mode="out-in">
-    <div v-if="state === 'loading'" key="loading" class="columns is-centered mt-5">
+    <div v-if="state === 'loading'" key="loading" class="columns is-mobile is-centered mt-5">
       <div class="loadingio-spinner-bean-eater-v07ctwokcxj"><div class="ldio-ahc5moy8ymc">
       <div><div></div><div></div><div></div></div><div><div></div><div></div><div></div></div>
       </div></div>
@@ -22,12 +22,14 @@
 
   import Query from '../components/Query';
   import NotFound from '../components/NotFound';
+  import Error from '../components/Error';
 
   export default {
     name: 'Default',
     components: {
       Query,
       NotFound,
+      Error
     },
     data() {
       return {
@@ -42,13 +44,13 @@
     methods: {
       getForm() {
         axios
-          .get(`http://localhost:5000/api/schemas${this.currentRoute}`)
+          .get(`http://localhost:5000/api/schemas${this.currentRoute}`, { timeout:5000 })
           .then(response => {
             this.formData = response.data
             this.state = 'found'
           })
           .catch((error) => {
-            if (error.response.status === 404) {
+            if ( error.response && error.response.status === 404) {
               this.state = 'notFound'
             } else {
               this.state = 'error'

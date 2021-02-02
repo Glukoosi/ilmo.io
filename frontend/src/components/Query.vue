@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container content">
-      <h1 class="title">ILMOITTAUTUMINEN {{ currentRoute }}</h1>
+      <h1 class="title">{{ currentRoute }}</h1>
       <p>Curabitur accumsan turpis pharetra <strong>augue tincidunt</strong> blandit. Quisque condimentum maximus mi, sit amet commodo arcu rutrum id. Proin pretium urna vel cursus venenatis. Suspendisse potenti. Etiam mattis sem rhoncus lacus dapibus facilisis. Donec at dignissim dui. Ut et neque nisl.</p>
       <ul>
         <li>In fermentum leo eu lectus mollis, quis dictum mi aliquet.</li>
@@ -15,7 +15,7 @@
           <p class="mb-4 has-text-weight-medium">Ilmoittautuminen on täynnä.</p>
         </div>
         <div v-else-if="nowDate <= startDate" key="starts">
-          <p class="mb-4 has-text-weight-medium">Ilmoittautuminen alkaa xx.xx.2021</p>
+          <p class="mb-4 has-text-weight-medium"> xx.xx.2021</p>
         </div>
         <div v-else-if="nowDate >= endDate" key="ended">
           <p class="mb-4 has-text-weight-medium">Ilmoittautuminen on päättynyt.</p>
@@ -26,24 +26,23 @@
             </component>
             <div class="field">
               <div class="control">
-                <button class="button">Ilmoittaudu</button>
+                <button class="button">Send</button>
               </div>
             </div>
           </form>
         </template>
       </transition>
       <p v-if="errors.length">
-        <b>Korjaa nämä:</b>
         <ul>
-          <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
+          <li class="has-text-danger" v-for="error in errors" v-bind:key="error">{{ error }}</li>
         </ul>
       </p>
-      <div v-if="registered.length !== 0">
-        <p>Ilmoittautuneet: {{ registered.length }} / {{ capacity }} </p>
+      <div v-if="registered.length !== 0" class="mt-5">
+        <p class="is-size-5 has-text-weight-semibold">Participants: {{ registered.length }} / {{ capacity }} </p>
         <ol type="1">
           <li v-for="(item, index) in registered" v-bind:key="item">
-            {{ item.name }} - {{ item.group }} - {{ item.email }}
-            {{ index >= capacity ? ' - varasijalla' : '' }}
+            {{ item }}
+            {{ index >= capacity ? ' - in reserve' : '' }}
           </li>
         </ol>
       </div>
@@ -92,12 +91,12 @@
     const socket = io('http://localhost:5000');
 
     socket.on(this.currentRoute.substring(1), (msg) => {
-      this.registered.push({
-        name: msg.name,
-        group: msg.group,
-        email: msg.email
-      })
+      this.registered.push(msg)
     });
+
+    for (const item in this.form) {
+      this.registration[item] = '';
+    }
 
     setInterval(() => {
       this.nowDate = new Date().getTime();

@@ -12,10 +12,12 @@ export async function connect(uri: string): Promise<void> {
 
 export async function listenMongo(io: SocketIO.Server): Promise<void> {
   const changeStream = db.watch();
-  changeStream.on('change', (next) => {
+  changeStream.on('change', (next: any) => {
     if ('fullDocument' in next && next.operationType === 'insert') {
       const collection = next.ns.coll;
-      io.emit(collection, next.fullDocument);
+      if (collection !== "schemas" && next.fullDocument?.name !== undefined) {
+        io.emit(collection, next.fullDocument.name);
+      }
     }
   });
 }

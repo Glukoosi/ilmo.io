@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container content">
-      <p class="is-size-1 has-text-centered">Eipä ollu :(</p>
+      <p class="is-size-1 has-text-centered has-text-weight-bold">Nothing here :(</p>
     </div>
   </section>
 </template>
