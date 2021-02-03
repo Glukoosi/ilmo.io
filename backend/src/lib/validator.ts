@@ -20,6 +20,8 @@ export type SchemaTemplate = {
 }
 
 export type RegTemplate = {
+  name: string,
+  email: string,
   [text: string]: string
 }
 

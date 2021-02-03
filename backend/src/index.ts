@@ -30,7 +30,21 @@ app.get('/', async (req: express.Request, res: express.Response) => {
   res.json({ msg: 'halojatahalloo' });
 });
 
-app.get('/api/schemas/:slug', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.get('/api/schemas', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  try {
+    const schemas = await db.getSchemas()
+    const slugs = schemas.map(a => a.slug);
+    if (schemas !== null) {
+      res.json(slugs);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/schema/:slug', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const slug: string = req.params.slug;
     const schema = await db.getSchema(slug)
@@ -44,13 +58,14 @@ app.get('/api/schemas/:slug', async (req: express.Request, res: express.Response
   }
 });
 
-app.get('/api/registration/:slug', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.get('/api/registrations/:slug', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     const slug: string = req.params.slug;
     const schema = await db.getSchema(slug)
     if (schema !== null) {
-      const registrations = await db.getAll(slug)
-      res.json(registrations);
+      const registrations = await db.getRegs(slug)
+      const names = registrations.map(a => a.name);
+      res.json(names);
     } else {
       res.sendStatus(404);
     }
@@ -115,10 +130,14 @@ async function main(): Promise<void> {
     }
   await db.connect(uri);
   await db.listenMongo(io);
+  try {
   await db.insert('schemas', schema);
+  } catch {
+    console.log("schema already at database");
+  }
 
   http.listen(port, () => {
-    console.log(`Socket.IO server running at http://localhost:${port}/`);
+    console.log(`Socket.IO server  running at http://localhost:${port}/`);
   });
 }
 

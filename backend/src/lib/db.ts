@@ -7,7 +7,7 @@ let db: mongodb.Db;
 export async function connect(uri: string): Promise<void> {
   const client: mongodb.MongoClient = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   db = client.db('database');
-  db.collection('schemas').createIndex({ slug: 1 });
+  db.collection('schemas').createIndex({ slug: 1 }, {unique: true});
 }
 
 export async function listenMongo(io: SocketIO.Server): Promise<void> {
@@ -22,16 +22,16 @@ export async function listenMongo(io: SocketIO.Server): Promise<void> {
   });
 }
 
-export async function getAll(collectionName: string): Promise<unknown[]> {
-    return db.collection(collectionName).find({}).toArray();
+export async function getSchemas(): Promise<validator.SchemaTemplate[]> {
+    return db.collection('schemas').find({}).toArray();
 }
 
 export async function getSchema(slug: string): Promise<validator.SchemaTemplate | null> {
     return db.collection('schemas').findOne({ slug: slug });
 }
 
-export async function get(collectionName: string, query: mongodb.FilterQuery<unknown>): Promise<validator.SchemaTemplate | null> {
-    return db.collection(collectionName).findOne(query);
+export async function getRegs(collectionName: string): Promise<validator.RegTemplate[]> {
+    return db.collection<validator.RegTemplate>(collectionName).find({}).toArray();
 }
 
 export async function count(collectionName: string): Promise<number> {
