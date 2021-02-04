@@ -1,0 +1,35 @@
+{
+    "slug":"example8",
+    "type":"registration",
+    "public":true,
+    "capacity":20,
+    "capacityMax":21,
+    "startDate":1611398230000,
+    "endDate":1642925670000,
+    "form":{
+        "name":{
+            "type":"Text",
+            "label":"Name",
+            "required":true
+        },
+        "notrequired":{
+            "type":"Text",
+            "label":"Optional field"
+        },
+        "group":{
+            "type":"Select",
+            "label":"Select",
+            "options":[
+                "Option 1",
+                "Option 2",
+                "Option 3"
+            ],
+            "required":true
+        },
+        "email":{
+            "type":"Email",
+            "label":"Email",
+            "required":true
+        }
+    }
+}

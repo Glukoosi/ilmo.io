@@ -2,30 +2,31 @@ import Joi from 'joi';
 
 import * as db from './db';
 
-export type SchemaTemplate = {
-    slug: string,
-    capacity: number,
-    capacityMax: number,
-    startDate: number,
-    endDate: number,
-    form: {
-      [text: string]: {
-        type: string,
-        required?: boolean,
-        label?: string,
-        value?: string,
-        options?: string[],
-      }
+export interface SchemaTemplate {
+  slug: string,
+  type: 'registration',
+  public: boolean,
+  capacity: number,
+  capacityMax: number,
+  startDate: number,
+  endDate: number,
+  form: {
+    [text: string]: {
+      type: 'Text' | 'Email' | 'Select',
+      label: string,
+      required?: boolean,
+      options?: string[],
     }
+  }
 }
 
-export type RegTemplate = {
+export interface RegTemplate {
   name: string,
   email: string,
   [text: string]: string
 }
 
-async function validateSchema(schema: SchemaTemplate, reg: RegTemplate): Promise<RegTemplate> {
+async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<RegTemplate> {
 
   const schemaError = new Error('invalid schema');
   schemaError.name = 'ValidationError';
@@ -38,9 +39,9 @@ async function validateSchema(schema: SchemaTemplate, reg: RegTemplate): Promise
     let schemaCheck = Joi.string().trim().label(item);
 
     if (schema.form[item].required === true) {
-      schemaCheck = schemaCheck.required()
+      schemaCheck = schemaCheck.required();
     } else {
-      schemaCheck = schemaCheck.allow('')
+      schemaCheck = schemaCheck.allow('');
     }
 
     switch (schema.form[item].type) {
@@ -73,17 +74,19 @@ async function validateSchema(schema: SchemaTemplate, reg: RegTemplate): Promise
   return reg;
 }
 
+export async function validateReg(schema: SchemaTemplate, reg: RegTemplate): Promise<RegTemplate> {
+  const value = await validateEntry(schema, reg);
+  const count = await db.count(String(schema.slug));
+  const nowDate = new Date().getTime();
+  if (count >= schema.capacityMax) {
+    throw new Error('query is full');
+  } else if (nowDate < schema.startDate || nowDate > schema.endDate) {
+    throw new Error('query is not open');
+  } else {
+    return value;
+  }
+}
 
-
-export async function validateReg(schema: SchemaTemplate, reg: RegTemplate): Promise<unknown> {
-      const value = await validateSchema(schema, reg);
-      const count = await db.count(String(schema.slug));
-      const nowDate = new Date().getTime();
-      if (count >= schema.capacityMax) {
-        throw new Error('query is full');
-      } else if (nowDate < schema.startDate || nowDate > schema.endDate) {
-        throw new Error('query is not open');
-      } else {
-        return value
-      }
+export async function validateSchema(schema: SchemaTemplate): Promise<SchemaTemplate> {
+  return schema;
 }

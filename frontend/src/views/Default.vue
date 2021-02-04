@@ -56,7 +56,7 @@
               this.state = 'error'
             }
           });
-      },
+      }
     }
   }
 </script>

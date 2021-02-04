@@ -7,7 +7,7 @@
     <div v-if="publicForms.length !== 0" class="mt-6 has-text-centered">
       <p class="is-size-5 has-text-weight-semibold">Public Forms:</p>
         <router-link v-for="item in publicForms" :to="item" class="is-size-5 has-text-weight-semibold" v-bind:key="item">
-          {{ item }}
+          {{ item }} <br />
         </router-link>
     </div>
   </section>
@@ -15,6 +15,7 @@
 
 <script>
   import axios from 'axios';
+  import { io } from 'socket.io-client';
 
   export default {
     name: 'Home',
@@ -25,6 +26,11 @@
     },
     mounted () {
       this.getForms();
+      const socket = io('http://localhost:5000');
+
+      socket.on('schemas', (msg) => {
+        this.publicForms.push(msg)
+      });
     },
     methods: {
       getForms() {

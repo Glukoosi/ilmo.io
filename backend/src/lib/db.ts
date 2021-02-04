@@ -4,9 +4,10 @@ import * as validator from './validator';
 
 let db: mongodb.Db;
 
-export async function connect(uri: string): Promise<void> {
+export async function init(uri: string): Promise<void> {
   const client: mongodb.MongoClient = await mongodb.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   db = client.db('database');
+
   db.collection('schemas').createIndex({ slug: 1 }, {unique: true});
 }
 
@@ -17,28 +18,37 @@ export async function listenMongo(io: SocketIO.Server): Promise<void> {
       const collection = next.ns.coll;
       if (collection !== "schemas" && next.fullDocument?.name !== undefined) {
         io.emit(collection, next.fullDocument.name);
+      } else if (collection === "schemas" && next.fullDocument?.slug !== undefined && next.fullDocument.public) {
+        io.emit(collection, next.fullDocument.slug);
       }
     }
   });
 }
 
 export async function getSchemas(): Promise<validator.SchemaTemplate[]> {
-    return db.collection('schemas').find({}).toArray();
+    return db.collection('schemas').find({}, {projection:{ _id: 0 }}).toArray();
 }
 
 export async function getSchema(slug: string): Promise<validator.SchemaTemplate | null> {
-    return db.collection('schemas').findOne({ slug: slug });
+    return db.collection('schemas').findOne({ slug: slug }, {projection:{ _id: 0 }});
 }
 
 export async function getRegs(collectionName: string): Promise<validator.RegTemplate[]> {
-    return db.collection<validator.RegTemplate>(collectionName).find({}).toArray();
+    return db.collection<validator.RegTemplate>(collectionName).find({}, {projection:{ _id: 0 }}).toArray();
 }
 
 export async function count(collectionName: string): Promise<number> {
     return db.collection(collectionName).countDocuments();
 }
 
-export async function insert(collectionName: string, value: unknown): Promise<unknown> {
+export async function insertSchema(value: validator.SchemaTemplate): Promise<validator.SchemaTemplate> {
+    const response = await db.collection('schemas').insertOne(value);
+    delete response.ops[0]._id
+    return response.ops[0]
+}
+
+export async function insertReg(collectionName: string, value: validator.RegTemplate): Promise<validator.RegTemplate> {
     const response = await db.collection(collectionName).insertOne(value);
+    delete response.ops[0]._id
     return response.ops[0]
 }
