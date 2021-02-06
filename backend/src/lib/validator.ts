@@ -10,6 +10,7 @@ export interface SchemaTemplate {
   capacityMax: number,
   startDate: Date,
   endDate: Date,
+  apiKey: string,
   form: {
     [text: string]: {
       type: 'Text' | 'Email' | 'Select',

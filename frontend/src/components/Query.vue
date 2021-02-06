@@ -115,7 +115,7 @@
     },
     getRegistrations() {
       axios
-        .get(`http://localhost:5000/api/registrations${this.currentRoute}`)
+        .get(`http://localhost:5000/api/registrations/names${this.currentRoute}`)
         .then(response => {
           this.registered = response.data
         })

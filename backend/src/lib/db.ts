@@ -25,31 +25,51 @@ export async function listenMongo(io: SocketIO.Server): Promise<void> {
   });
 }
 
-export async function getSchemas(): Promise<validator.SchemaTemplate[]> {
-    return db.collection('schemas').find({}, {projection:{ _id: 0 }}).toArray();
-}
-
 export async function getSchema(slug: string): Promise<validator.SchemaTemplate | null> {
-    return db.collection('schemas').findOne({ slug: slug }, {projection:{ _id: 0 }});
+  return db.collection('schemas').findOne({ slug: slug }, { projection: { _id: 0, apiKey: 0 } });
 }
 
-export async function getRegs(collectionName: string): Promise<validator.RegTemplate[]> {
-    return db.collection<validator.RegTemplate>(collectionName).find({}, {projection:{ _id: 0 }}).toArray();
+export async function getSchemaSlugs(): Promise<validator.SchemaTemplate[]> {
+  return db.collection('schemas').find({}, { projection: { _id: 0, slug: 1, public: 1 } }).toArray();
 }
 
-export async function count(collectionName: string): Promise<number> {
-    return db.collection(collectionName).countDocuments();
+export async function getSchemaApiKey(slug: string): Promise<validator.SchemaTemplate | null> {
+  return db.collection('schemas').findOne({ slug: slug }, { projection: { _id: 0, apiKey: 1 } });
+}
+
+export async function deleteSchema(slug: string): Promise<number | undefined> {
+  const result = await db.collection('schemas').deleteOne({ slug: slug });
+  console.log(result.deletedCount);
+  return result.deletedCount;
 }
 
 export async function insertSchema(value: validator.SchemaTemplate): Promise<validator.SchemaTemplate> {
-    const response = await db.collection('schemas').insertOne(value);
-    await db.collection(value.slug).createIndex({ email: 1 }, {unique: true});
-    delete response.ops[0]._id;
-    return response.ops[0];
+  const response = await db.collection('schemas').insertOne(value);
+  await db.collection(value.slug).createIndex({ email: 1 }, { unique: true });
+  delete response.ops[0]._id;
+  return response.ops[0];
+}
+
+export async function getRegs(collectionName: string): Promise<validator.RegTemplate[]> {
+  return db.collection<validator.RegTemplate>(collectionName).find({}, { projection: { _id: 0 } }).toArray();
+}
+
+export async function getRegNames(collectionName: string): Promise<validator.RegTemplate[]> {
+  return db.collection<validator.RegTemplate>(collectionName).find({}, { projection: { _id: 0, name: 1 } }).toArray();
+}
+
+export async function deleteRegs(collectionName: string): Promise<number | undefined> {
+  const result = await db.collection(collectionName).deleteMany({});
+  console.log(result.deletedCount);
+  return result.deletedCount;
 }
 
 export async function insertReg(collectionName: string, value: validator.RegTemplate): Promise<validator.RegTemplate> {
-    const response = await db.collection(collectionName).insertOne(value);
-    delete response.ops[0]._id;
-    return response.ops[0];
+  const response = await db.collection(collectionName).insertOne(value);
+  delete response.ops[0]._id;
+  return response.ops[0];
+}
+
+export async function count(collectionName: string): Promise<number> {
+  return db.collection(collectionName).countDocuments();
 }
