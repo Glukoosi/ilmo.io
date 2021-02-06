@@ -1,11 +1,11 @@
 {
-    "slug":"example8",
+    "slug":"example",
     "type":"registration",
     "public":true,
     "capacity":20,
     "capacityMax":21,
-    "startDate":1611398230000,
-    "endDate":1642925670000,
+    "startDate":"2021-01-23T08:14:30.000Z",
+    "endDate":"2023-01-23T08:14:30.000Z",
     "form":{
         "name":{
             "type":"Text",

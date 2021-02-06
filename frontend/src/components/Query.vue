@@ -12,13 +12,13 @@
 
       <transition name="mode-fade" mode="out-in">
         <div v-if="registered.length >= capacityMax" key="full">
-          <p class="mb-4 has-text-weight-medium">Ilmoittautuminen on täynnä.</p>
+          <p class="mb-4 has-text-weight-medium">Form is full</p>
         </div>
         <div v-else-if="nowDate <= startDate" key="starts">
-          <p class="mb-4 has-text-weight-medium"> xx.xx.2021</p>
+          <p class="mb-4 has-text-weight-medium"> Form opens at {{ startDate }}</p>
         </div>
         <div v-else-if="nowDate >= endDate" key="ended">
-          <p class="mb-4 has-text-weight-medium">Ilmoittautuminen on päättynyt.</p>
+          <p class="mb-4 has-text-weight-medium">Form is closed</p>
         </div>
         <template v-else-if="nowDate >= startDate && nowDate <= endDate">
           <form @submit.prevent="onSubmit">
@@ -75,9 +75,9 @@
     return {
       currentRoute: window.location.pathname,
       form: this.formData.form,
-      nowDate: new Date().getTime(),
-      startDate: this.formData.startDate,
-      endDate: this.formData.endDate,
+      nowDate: new Date(),
+      startDate: new Date(this.formData.startDate),
+      endDate: new Date(this.formData.endDate),
       capacity: this.formData.capacity,
       capacityMax: this.formData.capacityMax,
       registered: [],
@@ -99,7 +99,7 @@
     }
 
     setInterval(() => {
-      this.nowDate = new Date().getTime();
+      this.nowDate = new Date();
     }, 1000);
   },
   methods: {

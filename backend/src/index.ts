@@ -104,6 +104,8 @@ app.post('/api/registration/:slug', async (req: express.Request, res: express.Re
   } catch (error) {
     if (error.name === 'ValidationError') {
       res.status(422).json({ error: error.message });
+    } else if (error.message.startsWith('E11000 duplicate key error collection: database')){
+      res.status(422).json({ error: 'you have already registered' });
     }
     next(error);
   }

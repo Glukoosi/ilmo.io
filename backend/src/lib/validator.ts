@@ -8,8 +8,8 @@ export interface SchemaTemplate {
   public: boolean,
   capacity: number,
   capacityMax: number,
-  startDate: number,
-  endDate: number,
+  startDate: Date,
+  endDate: Date,
   form: {
     [text: string]: {
       type: 'Text' | 'Email' | 'Select',
@@ -129,18 +129,25 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
 }
 
 export async function validateReg(schema: SchemaTemplate, reg: RegTemplate): Promise<RegTemplate> {
+  const validationError = new Error('invalid schema');
+  validationError.name = 'ValidationError';
+
   const value = await validateEntry(schema, reg);
   const count = await db.count(String(schema.slug));
-  const nowDate = new Date().getTime();
+  const nowDate = new Date();
   if (count >= schema.capacityMax) {
-    throw new Error('query is full');
+    validationError.message = 'query is full'
+    throw validationError;
   } else if (nowDate < schema.startDate || nowDate > schema.endDate) {
-    throw new Error('query is not open');
+    validationError.message = 'query is not open'
+    throw validationError;
   } else {
     return value;
   }
 }
 
 export async function validateSchema(schema: SchemaTemplate): Promise<SchemaTemplate> {
+  schema.startDate = new Date(schema.startDate)
+  schema.endDate = new Date(schema.endDate)
   return await schemaForSchemas.validateAsync(schema);
 }
