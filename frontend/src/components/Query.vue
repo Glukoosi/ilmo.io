@@ -1,16 +1,9 @@
 <template>
   <section class="section">
     <div class="container content">
-      <h1 class="title">{{ currentRoute }}</h1>
-      <p>Curabitur accumsan turpis pharetra <strong>augue tincidunt</strong> blandit. Quisque condimentum maximus mi, sit amet commodo arcu rutrum id. Proin pretium urna vel cursus venenatis. Suspendisse potenti. Etiam mattis sem rhoncus lacus dapibus facilisis. Donec at dignissim dui. Ut et neque nisl.</p>
-      <ul>
-        <li>In fermentum leo eu lectus mollis, quis dictum mi aliquet.</li>
-        <li>Morbi eu nulla lobortis, lobortis est in, fringilla felis.</li>
-        <li>Aliquam nec felis in sapien venenatis viverra fermentum nec lectus.</li>
-        <li>Ut non enim metus.</li>
-      </ul>
-
-      <transition name="mode-fade" mode="out-in">
+      <h1 class="title">{{ heading }}</h1>
+      <span style="white-space: pre-wrap;">{{ description }}</span>
+      <transition name="mode-fade" mode="out-in" class="mt-5">
         <div v-if="registered.length >= capacityMax" key="full">
           <p class="mb-4 has-text-weight-medium">Form is full</p>
         </div>
@@ -75,6 +68,8 @@
     return {
       currentRoute: window.location.pathname,
       form: this.formData.form,
+      heading: this.formData.heading,
+      description: this.formData.description,
       nowDate: new Date(),
       startDate: new Date(this.formData.startDate),
       endDate: new Date(this.formData.endDate),

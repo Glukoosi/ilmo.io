@@ -1,5 +1,8 @@
 {
-    "slug":"example",
+    "slug":"example4",
+    "type":"registration",
+    "heading":"exampleHeading :o",
+    "description":"<h1>test</h1> asdfgsedf asdfasdf asdflaskdfjaslkdfj asdlfkjasdf asdfasdfasdf asdfasdf\n\n\n;;;{}{}[][]*(^&%test\ntesttestetst\n𝐰𝟒𝐭𝐡𝐠𝐬𝐫𝐟𝐡𝐠\n\n👌",
     "type":"registration",
     "public":true,
     "capacity":20,

@@ -38,6 +38,15 @@ const schemaForSchemas = Joi.object({
     .trim()
     .valid('registration')
     .required(),
+  heading: Joi.string()
+    .trim()
+    .min(1)
+    .max(500)
+    .required(),
+  description: Joi.string()
+    .trim()
+    .min(1)
+    .max(2000),
   public: Joi.boolean()
     .required(),
   capacity: Joi.number()
@@ -56,7 +65,32 @@ const schemaForSchemas = Joi.object({
   endDate: Joi.date()
     .timestamp()
     .greater(Joi.ref('startDate')),
-  form: Joi.object()
+  form: Joi.object({
+    name: Joi.object({
+      type: Joi.string()
+        .trim()
+        .valid('Text')
+        .required(),
+      label: Joi.string()
+        .trim()
+        .min(1)
+        .max(255)
+        .required(),
+      required: true,
+    }),
+    email: Joi.object({
+      type: Joi.string()
+        .trim()
+        .valid('Email')
+        .required(),
+      label: Joi.string()
+        .trim()
+        .min(1)
+        .max(255)
+        .required(),
+      required: true,
+    })
+  })
     .pattern(Joi.string().min(1).max(20),
       Joi.object({
         type: Joi.string()

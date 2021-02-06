@@ -6,7 +6,7 @@
     <p class="is-size-4 has-text-centered has-text-weight-medium">Yet Another Form Generator</p>
     <div v-if="publicForms.length !== 0" class="mt-6 has-text-centered">
       <p class="is-size-5 has-text-weight-semibold">Public Forms:</p>
-        <router-link v-for="item in publicForms" :to="item" class="is-size-5 has-text-weight-semibold" v-bind:key="item">
+        <router-link v-for="item in publicForms" :to="item" class="is-size-5 has-text-weight-medium" v-bind:key="item">
           {{ item }} <br />
         </router-link>
     </div>
