@@ -30,15 +30,15 @@
           <li class="has-text-danger" v-for="error in errors" v-bind:key="error">{{ error }}</li>
         </ul>
       </p>
-      <div v-if="registered.length !== 0" class="mt-5">
-        <p class="is-size-5 has-text-weight-semibold">Participants: {{ registered.length }} / {{ capacity }} </p>
+        <p class="is-size-5 has-text-weight-semibold mt-5">Participants: {{ registered.length ? registered.length : '-'}} / {{ capacity }} </p>
         <ol type="1">
-          <li v-for="(item, index) in registered" v-bind:key="item">
-            {{ item }}
-            {{ index >= capacity ? ' - in reserve' : '' }}
-          </li>
+          <transition-group name="list" tag="router-link" appear>
+            <li v-for="(item, index) in registered" v-bind:key="item" class="list-item">
+              {{ item }}
+              {{ index >= capacity ? ' - in reserve' : '' }}
+            </li>
+          </transition-group>
         </ol>
-      </div>
     </div>
   </section>
 </template>
@@ -135,5 +135,14 @@
 
 .mode-fade-enter-from, .mode-fade-leave-to {
   opacity: 0
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.8s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
 }
 </style>

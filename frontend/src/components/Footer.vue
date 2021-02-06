@@ -1,9 +1,11 @@
 <template>
 <footer class="footer">
   <div class="content has-text-centered">
-    <p>
-      contact@ilmo.io
-    </p>
+    <a href="https://github.com/Glukoosi/ilmo.io" target="_blank">
+    <span class="icon is-large">
+      <img src="@/assets/logo-github.svg">
+    </span>
+    </a>
   </div>
 </footer>
 </template>

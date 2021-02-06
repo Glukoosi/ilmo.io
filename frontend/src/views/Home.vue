@@ -6,9 +6,11 @@
     <p class="is-size-4 has-text-centered has-text-weight-medium">Yet Another Form Generator</p>
     <div v-if="publicForms.length !== 0" class="mt-6 has-text-centered">
       <p class="is-size-5 has-text-weight-semibold">Public Forms:</p>
-        <router-link v-for="item in publicForms" :to="item" class="is-size-5 has-text-weight-medium" v-bind:key="item">
+      <transition-group name="list" tag="router-link" appear>
+        <router-link v-for="item in publicForms" :to="item" class="is-size-5 has-text-weight-medium list-item" v-bind:key="item">
           {{ item }} <br />
         </router-link>
+      </transition-group>
     </div>
   </section>
 </template>
@@ -46,4 +48,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 1.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+}
 </style>
