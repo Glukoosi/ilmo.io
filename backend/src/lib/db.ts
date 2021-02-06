@@ -43,12 +43,13 @@ export async function count(collectionName: string): Promise<number> {
 
 export async function insertSchema(value: validator.SchemaTemplate): Promise<validator.SchemaTemplate> {
     const response = await db.collection('schemas').insertOne(value);
-    delete response.ops[0]._id
-    return response.ops[0]
+    await db.collection(value.slug).createIndex({ email: 1 }, {unique: true});
+    delete response.ops[0]._id;
+    return response.ops[0];
 }
 
 export async function insertReg(collectionName: string, value: validator.RegTemplate): Promise<validator.RegTemplate> {
     const response = await db.collection(collectionName).insertOne(value);
-    delete response.ops[0]._id
-    return response.ops[0]
+    delete response.ops[0]._id;
+    return response.ops[0];
 }

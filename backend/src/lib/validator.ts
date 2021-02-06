@@ -26,6 +26,60 @@ export interface RegTemplate {
   [text: string]: string
 }
 
+const schemaForSchemas = Joi.object({
+  slug: Joi.string()
+    .trim()
+    .alphanum()
+    .min(1)
+    .max(100)
+    .invalid('schemas', 'users')
+    .required(),
+  type: Joi.string()
+    .trim()
+    .valid('registration')
+    .required(),
+  public: Joi.boolean()
+    .required(),
+  capacity: Joi.number()
+    .integer()
+    .min(1)
+    .max(500)
+    .required(),
+  capacityMax: Joi.number()
+    .integer()
+    .min(1)
+    .max(500)
+    .required(),
+  startDate: Joi.date()
+    .timestamp()
+    .required(),
+  endDate: Joi.date()
+    .timestamp()
+    .greater(Joi.ref('startDate')),
+  form: Joi.object()
+    .pattern(Joi.string().min(1).max(20),
+      Joi.object({
+        type: Joi.string()
+          .trim()
+          .valid('Text', 'Email', 'Select')
+          .required(),
+        label: Joi.string()
+          .trim()
+          .min(1)
+          .max(255)
+          .required(),
+        required: Joi.boolean(),
+        options: Joi.array()
+          .items(Joi.string()
+            .min(1)
+            .max(100)
+          )
+          .max(50)
+      })
+    )
+    .max(50)
+})
+
 async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<RegTemplate> {
 
   const schemaError = new Error('invalid schema');
@@ -88,5 +142,5 @@ export async function validateReg(schema: SchemaTemplate, reg: RegTemplate): Pro
 }
 
 export async function validateSchema(schema: SchemaTemplate): Promise<SchemaTemplate> {
-  return schema;
+  return await schemaForSchemas.validateAsync(schema);
 }
