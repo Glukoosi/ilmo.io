@@ -13,19 +13,24 @@ const http = require("http").Server(app);
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const socketio = require('socket.io');
 
+const port: number = Number(process.env.PORT) || 5000;
+const mongoUri = 'mongodb://mongodb:27017/?replicaSet=rs0';
+const corsUrl: string = process.env.CORS_URL || '';
+
+const corsOptions = {
+  origin: corsUrl,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 const io: SocketIO.Server = socketio(http, {
   cors: {
-    origin: '*',
+    origin: corsUrl,
     methods: ['GET', 'POST']
   }
 });
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(helmet());
-
-const port: number = Number(process.env.PORT) || 5000;
-const uri: string = process.env.MONGO_URL || 'mongodb://mongodb:27017/?replicaSet=rs0';
 
 app.get('/', async (req: express.Request, res: express.Response) => {
   res.json({ msg: 'halojatahalloo' });
@@ -154,7 +159,7 @@ app.post('/api/registration/:slug', async (req: express.Request, res: express.Re
 });
 
 async function main(): Promise<void> {
-  await db.init(uri);
+  await db.init(mongoUri);
   await db.listenMongo(io);
 
   http.listen(port, () => {

@@ -39,7 +39,6 @@ export async function getSchemaApiKey(slug: string): Promise<validator.SchemaTem
 
 export async function deleteSchema(slug: string): Promise<number | undefined> {
   const result = await db.collection('schemas').deleteOne({ slug: slug });
-  console.log(result.deletedCount);
   return result.deletedCount;
 }
 
@@ -60,7 +59,6 @@ export async function getRegNames(collectionName: string): Promise<validator.Reg
 
 export async function deleteRegs(collectionName: string): Promise<number | undefined> {
   const result = await db.collection(collectionName).deleteMany({});
-  console.log(result.deletedCount);
   return result.deletedCount;
 }
 

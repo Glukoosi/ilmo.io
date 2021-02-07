@@ -66,6 +66,8 @@
   },
   data() {
     return {
+      apiUrl: process.env.VUE_APP_API_URL,
+      apiPort: process.env.VUE_APP_API_PORT,
       currentRoute: window.location.pathname,
       form: this.formData.form,
       heading: this.formData.heading,
@@ -83,7 +85,7 @@
   },
   mounted () {
     this.getRegistrations();
-    const socket = io('http://localhost:5000');
+    const socket = io(`${this.apiUrl}:${this.apiPort}`);
 
     socket.on(this.currentRoute.substring(1), (msg) => {
       this.registered.push(msg)
@@ -102,7 +104,7 @@
       this.errors = []
 
       axios
-        .post(`http://localhost:5000/api/registration${this.currentRoute}`, this.registration)
+        .post(`${this.apiUrl}:${this.apiPort}/api/registration${this.currentRoute}`, this.registration)
         .then(() => {
           for (const item in this.form) {
             this.registration[item] = '';
@@ -115,7 +117,7 @@
     },
     getRegistrations() {
       axios
-        .get(`http://localhost:5000/api/registrations/names${this.currentRoute}`)
+        .get(`${this.apiUrl}:${this.apiPort}/api/registrations/names${this.currentRoute}`)
         .then(response => {
           this.registered = response.data
         })

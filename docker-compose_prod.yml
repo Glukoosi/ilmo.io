@@ -5,32 +5,23 @@ services:
     build:
         context: frontend
         dockerfile: Dockerfile
-        target: base-image
-    ports:
-      - 8080:8080
-    volumes:
-        - ./frontend/src/:/app/src/
+        target: prod
     networks:
         - internal
     depends_on:
       - back
-    command: npm run serve
 
   back:
-  environment:
-    - CORS_URL=http://localhost:8080
+    environment:
+      - CORS_URL=https://ilmo.io
     build:
       context: backend
       dockerfile: Dockerfile
-    ports:
-      - 5000:5000
-    volumes:
-        - ./backend/src:/app/src/
     networks:
       - internal
     depends_on:
       - mongodb
-    command: sh -c './wait-for mongodb:27017 -- npm run dev'
+    command: sh -c './wait-for mongodb:27017 -- npm start'
 
   mongodb:
     hostname: mongodb
@@ -46,6 +37,23 @@ services:
       interval: 10s
       start_period: 30s
     command: mongod --replSet "rs0"
+
+  caddy:
+    image: caddy:2.2.1
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+        - internal
+
+volumes:
+  caddy_data:
+  caddy_config:
 
 networks:
   internal:

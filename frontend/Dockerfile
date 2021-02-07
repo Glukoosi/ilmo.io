@@ -1,4 +1,4 @@
-FROM node:15.7.0-alpine3.10
+FROM node:15.7.0-alpine3.10 as base-image
 ENV TZ Europe/Helsinki
 
 RUN mkdir -p /app
@@ -10,3 +10,13 @@ WORKDIR /app
 RUN npm install
 
 COPY . .
+
+
+FROM base-image as build
+
+RUN npm run build
+
+
+FROM nginx:1.19.6 as prod
+COPY --from=build /app/dist /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]

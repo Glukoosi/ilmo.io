@@ -23,12 +23,14 @@
     name: 'Home',
     data() {
       return {
+        apiUrl: process.env.VUE_APP_API_URL,
+        apiPort: process.env.VUE_APP_API_PORT,
         publicForms: []
       }
     },
     mounted () {
       this.getForms();
-      const socket = io('http://localhost:5000');
+      const socket = io(`${this.apiUrl}:${this.apiPort}`);
 
       socket.on('schemas', (msg) => {
         this.publicForms.push(msg)
@@ -37,7 +39,7 @@
     methods: {
       getForms() {
         axios
-          .get(`http://localhost:5000/api/schemas`, { timeout:5000 })
+          .get(`${this.apiUrl}:${this.apiPort}/api/schemas`, { timeout:5000 })
           .then(response => {
             this.publicForms = response.data
           })
@@ -50,7 +52,7 @@
 <style scoped>
 .list-enter-active,
 .list-leave-active {
-  transition: all 1.5s ease;
+  transition: all 0.8s ease;
 }
 .list-enter-from,
 .list-leave-to {

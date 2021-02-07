@@ -1,0 +1,13 @@
+ilmo.io {
+    reverse_proxy front:80
+}
+
+api.ilmo.io {
+    reverse_proxy back:5000
+    @websockets {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+
+    reverse_proxy @websockets back:5000
+}
