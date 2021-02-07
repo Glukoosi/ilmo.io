@@ -46,7 +46,7 @@
     methods: {
       getForm() {
         axios
-          .get(`http://${this.apiUrl}:${this.apiPort}/api/schema${this.currentRoute}`, { timeout:5000 })
+          .get(`${this.apiUrl}:${this.apiPort}/api/schema${this.currentRoute}`, { timeout:5000 })
           .then(response => {
             this.formData = response.data
             this.state = 'found'
