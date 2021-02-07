@@ -33,6 +33,8 @@
     },
     data() {
       return {
+        apiUrl: process.env.VUE_APP_API_URL,
+        apiPort: process.env.VUE_APP_API_PORT,
         currentRoute: window.location.pathname,
         formData: {},
         state: 'loading'
@@ -44,7 +46,7 @@
     methods: {
       getForm() {
         axios
-          .get(`http://localhost:5000/api/schema${this.currentRoute}`, { timeout:5000 })
+          .get(`http://${this.apiUrl}:${this.apiPort}/api/schema${this.currentRoute}`, { timeout:5000 })
           .then(response => {
             this.formData = response.data
             this.state = 'found'
