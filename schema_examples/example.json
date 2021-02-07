@@ -2,7 +2,7 @@
     "slug":"example",
     "type":"registration",
     "heading":"exampleHeading",
-    "description":"<h1>test</h1> asdfgsedf asdfasdf asdflaskdfjaslkdfj asdlfkjasdf asdfasdfasdf asdfasdf\n\n\n;;;{}{}[][]*(^&%test\ntesttestetst\n𝐰𝟒𝐭𝐡𝐠𝐬𝐫𝐟𝐡𝐠\n\n👌",
+    "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque. Subscript works as well!\n\n\n\n𝐰𝟒𝐭𝐡𝐠𝐬𝐫𝐟𝐡𝐠\n\n👌",
     "type":"registration",
     "public":true,
     "capacity":20,

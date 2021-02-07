@@ -3,7 +3,7 @@
     <div class="columns is-mobile is-centered mt-5 content">
        <img src="@/assets/logo_transparent_invert.png">
     </div>
-    <p class="is-size-4 has-text-centered has-text-weight-medium">Yet Another Form Generator</p>
+    <p class="is-size-4 has-text-centered has-text-weight-medium">Real-Time Registration Form Generator</p>
     <div v-if="publicForms.length !== 0" class="mt-6 has-text-centered">
       <p class="is-size-5 has-text-weight-semibold">Public Forms:</p>
       <transition-group name="list" tag="router-link" appear>

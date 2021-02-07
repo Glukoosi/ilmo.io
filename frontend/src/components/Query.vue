@@ -8,7 +8,7 @@
           <p class="mb-4 has-text-weight-medium">Form is full</p>
         </div>
         <div v-else-if="nowDate <= startDate" key="starts">
-          <p class="mb-4 has-text-weight-medium"> Form opens at {{ startDate }}</p>
+          <p class="mb-4 has-text-weight-medium"> Form opens at {{ startDate.toUTCString() }}</p>
         </div>
         <div v-else-if="nowDate >= endDate" key="ended">
           <p class="mb-4 has-text-weight-medium">Form is closed</p>

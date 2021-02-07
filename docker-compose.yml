@@ -17,8 +17,8 @@ services:
     command: npm run serve
 
   back:
-  environment:
-    - CORS_URL=http://localhost:8080
+    environment:
+      - CORS_URL=http://localhost:8080
     build:
       context: backend
       dockerfile: Dockerfile
