@@ -35,8 +35,7 @@
         },
         "optionaltextarea":{
             "type":"TextArea",
-            "label":"Optional textArea",
-            "required":true
+            "label":"Optional textArea"
         }
     }
 }
