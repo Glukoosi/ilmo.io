@@ -9,7 +9,7 @@ Real-Time Registration Form Generator
 ## Create a Form
 
 ```
-cd schema_templates/
+cd schema_examples/
 curl -X POST -H "Content-Type: application/json" -d @example.json localhost:5000/api/schema
 
 ```
