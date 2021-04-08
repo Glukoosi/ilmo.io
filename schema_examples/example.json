@@ -32,6 +32,11 @@
             "type":"Email",
             "label":"Email",
             "required":true
+        },
+        "optionaltextarea":{
+            "type":"TextArea",
+            "label":"Optional textArea",
+            "required":true
         }
     }
 }

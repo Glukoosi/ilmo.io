@@ -49,6 +49,7 @@
 
   import Select from './Form/Select';
   import Text from './Form/Text';
+  import TextArea from './Form/TextArea';
   import Email from './Form/Email';
 
   export default {
@@ -62,6 +63,7 @@
   components: {
     Select,
     Text,
+    TextArea,
     Email
   },
   data() {
