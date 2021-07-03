@@ -135,9 +135,10 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
 
     switch (schema.form[item].type) {
       case 'CheckBox': {
-        schemaCheck = schemaCheck
-          .max(255);
-        break;
+        if (schema.form[item].label !== reg[item] && schema.form[item].required) {
+          schemaError.message = `"${item}" value has to be same as label`
+          throw schemaError;
+        }
       }
       case 'Text': {
         schemaCheck = schemaCheck
