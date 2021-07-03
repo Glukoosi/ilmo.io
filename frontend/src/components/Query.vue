@@ -52,6 +52,7 @@
   import TextArea from './Form/TextArea';
   import Email from './Form/Email';
   import CheckBox from './Form/CheckBox';
+  import Radio from './Form/Radio';
 
   export default {
   name: 'Query',
@@ -66,7 +67,8 @@
     Text,
     TextArea,
     Email,
-    CheckBox
+    CheckBox,
+    Radio
   },
   data() {
     return {

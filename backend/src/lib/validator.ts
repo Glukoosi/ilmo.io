@@ -13,7 +13,7 @@ export interface SchemaTemplate {
   apiKey: string,
   form: {
     [text: string]: {
-      type: 'CheckBox' | 'Text' | 'TextArea' | 'Email' | 'Select',
+      type: 'CheckBox' | 'Radio' | 'Text' | 'TextArea' | 'Email' | 'Select',
       label: string,
       required?: boolean,
       options?: string[],
@@ -96,7 +96,7 @@ const schemaForSchemas = Joi.object({
       Joi.object({
         type: Joi.string()
           .trim()
-          .valid('CheckBox', 'Text', 'TextArea', 'Email', 'Select')
+          .valid('CheckBox', 'Radio', 'Text', 'TextArea', 'Email', 'Select')
           .required(),
         label: Joi.string()
           .trim()
@@ -135,10 +135,22 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
 
     switch (schema.form[item].type) {
       case 'CheckBox': {
+        schemaCheck = schemaCheck
+          .max(255);
         if (schema.form[item].label !== reg[item] && schema.form[item].required) {
-          schemaError.message = `"${item}" value has to be same as label`
+          schemaError.message = `"${item}" value has to be same as label`;
           throw schemaError;
         }
+        break;
+      }
+      case 'Radio': {
+        schemaCheck = schemaCheck
+          .max(255);
+        if (!schema.form[item].options?.includes(reg[item]) && schema.form[item].required) {
+          schemaError.message = `"${item}" has to be one of the options`;
+          throw schemaError;
+        }
+        break;
       }
       case 'Text': {
         schemaCheck = schemaCheck
@@ -159,10 +171,10 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
       case 'Select': {
         schemaCheck = schemaCheck
           .max(255);
-          if (!schema.form[item].options?.includes(reg[item]) && schema.form[item].required) {
-            schemaError.message = `"${item}" has to be one of the options`
-            throw schemaError;
-          }
+        if (!schema.form[item].options?.includes(reg[item]) && schema.form[item].required) {
+          schemaError.message = `"${item}" has to be one of the options`;
+          throw schemaError;
+        }
         break;
       }
       default: {

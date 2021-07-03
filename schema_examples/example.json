@@ -33,6 +33,16 @@
             "label":"Email",
             "required":true
         },
+        "radiobuttons":{
+            "type":"Radio",
+            "label":"Radio",
+            "options":[
+                "Option 1",
+                "Option 2",
+                "Option 3"
+            ],
+            "required":true
+        },
         "optionaltextarea":{
             "type":"TextArea",
             "label":"Optional textArea"

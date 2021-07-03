@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'Form',
+  name: 'Select',
   props: [
     'modelValue',
     'settings'

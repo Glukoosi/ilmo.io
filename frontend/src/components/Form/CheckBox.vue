@@ -6,6 +6,7 @@
       :value="settings.label"
       @input="$emit('update:modelValue', $event.target.value)"
       :required="settings.required"
+      :checked="modelValue === settings.label"
     />
     {{ settings.label }}
     </label>
