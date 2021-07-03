@@ -4,7 +4,6 @@ import * as db from './db';
 
 export interface SchemaTemplate {
   slug: string,
-  type: 'registration',
   public: boolean,
   capacity: number,
   capacityMax: number,
@@ -34,10 +33,6 @@ const schemaForSchemas = Joi.object({
     .min(1)
     .max(100)
     .invalid('schemas', 'users')
-    .required(),
-  type: Joi.string()
-    .trim()
-    .valid('registration')
     .required(),
   heading: Joi.string()
     .trim()
