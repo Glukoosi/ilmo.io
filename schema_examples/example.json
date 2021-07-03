@@ -36,6 +36,11 @@
         "optionaltextarea":{
             "type":"TextArea",
             "label":"Optional textArea"
+        },
+        "checkbox":{
+            "type":"CheckBox",
+            "label":"Check this box",
+            "required":true
         }
     }
 }

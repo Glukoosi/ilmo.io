@@ -51,6 +51,7 @@
   import Text from './Form/Text';
   import TextArea from './Form/TextArea';
   import Email from './Form/Email';
+  import CheckBox from './Form/CheckBox';
 
   export default {
   name: 'Query',
@@ -64,7 +65,8 @@
     Select,
     Text,
     TextArea,
-    Email
+    Email,
+    CheckBox
   },
   data() {
     return {

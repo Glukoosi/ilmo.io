@@ -13,7 +13,7 @@ export interface SchemaTemplate {
   apiKey: string,
   form: {
     [text: string]: {
-      type: 'Text' | 'TextArea' | 'Email' | 'Select',
+      type: 'CheckBox' | 'Text' | 'TextArea' | 'Email' | 'Select',
       label: string,
       required?: boolean,
       options?: string[],
@@ -96,7 +96,7 @@ const schemaForSchemas = Joi.object({
       Joi.object({
         type: Joi.string()
           .trim()
-          .valid('Text', 'TextArea', 'Email', 'Select')
+          .valid('CheckBox', 'Text', 'TextArea', 'Email', 'Select')
           .required(),
         label: Joi.string()
           .trim()
@@ -134,6 +134,11 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
     }
 
     switch (schema.form[item].type) {
+      case 'CheckBox': {
+        schemaCheck = schemaCheck
+          .max(255);
+        break;
+      }
       case 'Text': {
         schemaCheck = schemaCheck
           .max(255);
