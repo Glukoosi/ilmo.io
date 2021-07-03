@@ -4,7 +4,7 @@ Real-Time Registration Form Generator
 
 ## Launch dev env
 
-`docker compose up --build`
+`docker-compose up --build`
 
 ## Create a Form
 
