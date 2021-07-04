@@ -32,7 +32,7 @@ const schemaForSchemas = Joi.object({
     .alphanum()
     .min(1)
     .max(100)
-    .invalid('schemas', 'users')
+    .invalid('schemas', 'users' , 'create')
     .required(),
   heading: Joi.string()
     .trim()
@@ -130,11 +130,13 @@ async function validateEntry(schema: SchemaTemplate, reg: RegTemplate): Promise<
 
     switch (schema.form[item].type) {
       case 'CheckBox': {
-        schemaCheck = schemaCheck
-          .max(255);
-        if (schema.form[item].label !== reg[item] && schema.form[item].required) {
-          schemaError.message = `"${item}" value has to be same as label`;
-          throw schemaError;
+        reg[item] = reg[item].toString();
+        if (schema.form[item].required === true) {
+          schemaCheck = schemaCheck
+            .valid('true');
+        } else {
+          schemaCheck = schemaCheck
+            .valid('true', 'false');
         }
         break;
       }

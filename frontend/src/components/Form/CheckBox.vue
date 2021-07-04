@@ -4,9 +4,9 @@
     <input
       type="checkbox"
       :value="settings.label"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.checked)"
+      :checked="modelValue || false"
       :required="settings.required"
-      :checked="modelValue === settings.label"
     />
     {{ settings.label }}
     </label>
