@@ -1,4 +1,4 @@
-FROM node:15.7.0-alpine3.10 as base-image
+FROM node:16-alpine3.11 as base-image
 ENV TZ Europe/Helsinki
 
 RUN mkdir -p /app
