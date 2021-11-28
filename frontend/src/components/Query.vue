@@ -19,7 +19,7 @@
             </component>
             <div class="field">
               <div class="control">
-                <button class="button">Send</button>
+                <button :class="{ 'is-loading': isLoading }" class="button">Send</button>
               </div>
             </div>
           </form>
@@ -86,7 +86,7 @@
       registered: [],
       errors: [],
       registration: {},
-      isLoading: true
+      isLoading: false
     }
   },
   mounted () {
@@ -107,18 +107,22 @@
   },
   methods: {
     onSubmit() {
-      this.errors = []
+      this.errors = [];
+      this.isLoading = true;
 
       axios
         .post(`${this.apiUrl}:${this.apiPort}/api/registration${this.currentRoute}`, this.registration)
         .then(() => {
+          this.registration = {};
           for (const item in this.form) {
             this.registration[item] = '';
           }
+          this.isLoading = false;
         })
         .catch(error => {
           const response = JSON.parse(error.request.response)
           this.errors.push(response.error);
+          this.isLoading = false;
         });
     },
     getRegistrations() {
